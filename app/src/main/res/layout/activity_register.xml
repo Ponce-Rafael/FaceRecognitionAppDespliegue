@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Imagen de fondo -->
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo" />
+
+    <!-- Título grande "REGISTER" -->
+    <TextView
+        android:id="@+id/labelWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:elevation="8dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:text="REGISTER"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <!-- Texto "Nombre de Usuario:" -->
+    <TextView
+        android:id="@+id/labelUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelWelcome"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:text="Nombre de Usuario:"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <!-- Campo para ingresar el nombre de usuario -->
+    <EditText
+        android:id="@+id/inputUsername"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/labelUsername"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edittext_rounded"
+        android:fontFamily="sans-serif-condensed"
+        android:hint="Ingrese su nombre..."
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <!-- Texto "Escanear rostro" -->
+    <TextView
+        android:id="@+id/labelScanFace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputUsername"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:text="Escanear Rostro:"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <!-- Botón con imagen para escanear rostro -->
+    <ImageButton
+        android:id="@+id/btnScanFace"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/inputUsername"
+        android:layout_marginTop="90dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_face_scan"
+        android:background="@drawable/btn_border"
+        android:contentDescription="Escanear rostro" />
+
+    <!-- Botón Registrar -->
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnScanFace"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:text="Registrarse"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:background="@drawable/button_background" />
+
+</RelativeLayout>

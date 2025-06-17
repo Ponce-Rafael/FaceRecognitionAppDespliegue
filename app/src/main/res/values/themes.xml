@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Tema normal de la app -->
+    <style name="Theme.FaceRecognitionApp" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#000000</item>
+        <item name="android:statusBarColor">#000000</item>
+        <!-- Fondo negro puro -->
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <!-- Tema para la pantalla de carga (Splash) -->
+    <style name="Theme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+    </style>
+
+</resources>

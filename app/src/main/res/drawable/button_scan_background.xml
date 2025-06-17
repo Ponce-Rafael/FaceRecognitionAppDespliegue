@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Estado PRESIONADO -->
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <solid android:color="#003366"/>
+        </shape>
+    </item>
+
+    <!-- Estado NORMAL -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#0047AB"/>
+        </shape>
+    </item>
+
+</selector>
