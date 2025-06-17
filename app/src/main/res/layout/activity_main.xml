@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Imagen de fondo -->
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo" />
+
+    <!-- Texto Bienvenido -->
+    <TextView
+        android:id="@+id/labelWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:elevation="8dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3"
+        android:text="BIENVENIDO"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/labelWelcome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="Iniciar Sesión"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_background"
+        android:elevation="6dp"
+        android:padding="12dp" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="Registrarse"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_background"
+        android:elevation="6dp"
+        android:padding="12dp" />
+
+</RelativeLayout>

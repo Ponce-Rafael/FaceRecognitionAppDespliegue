@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Imagen de fondo -->
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fondo" />
+
+    <!-- Título LOGIN -->
+    <TextView
+        android:id="@+id/labelLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_centerHorizontal="true"
+        android:text="LOGIN"
+        android:textSize="50sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:elevation="8dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="3" />
+
+    <!-- Texto para indicar acción -->
+    <TextView
+        android:id="@+id/labelScanPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/labelLogin"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:text="Escanear Rostro"
+        android:textSize="25sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textStyle="bold" />
+
+    <!-- Botón con imagen para escanear rostro -->
+    <ImageButton
+        android:id="@+id/btnScanFace"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/labelScanPrompt"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_border"
+        android:padding="20dp"
+        android:src="@drawable/ic_face_scan"
+        android:contentDescription="Escanear rostro" />
+
+</RelativeLayout>
