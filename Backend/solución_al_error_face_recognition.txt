@@ -1,0 +1,5 @@
+
+El error es probocado por la version de numpy lo mejor es desimtalar numpt y instalar la version 1.23.5
+pip uninstall -y numpy                                                                                
+pip install numpy==1.23.5
+   
