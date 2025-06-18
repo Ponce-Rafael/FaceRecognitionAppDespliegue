@@ -116,7 +116,13 @@ public class RegisterActivity extends Activity {
     }
 
     private void enviarDatosAlServidor(String nombre, String imagenBase64) {
+//      IP de mi casa
         String URL = "http://192.168.1.101:5000/registro";
+
+        /* IP de zona gamer
+        String URL = "http://192.168.140.236:5000/registro";
+        */
+
         RequestQueue queue = Volley.newRequestQueue(this);
 
         StringRequest request = new StringRequest(Request.Method.POST, URL,

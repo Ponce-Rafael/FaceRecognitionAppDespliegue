@@ -34,13 +34,10 @@ public class LoginActivity extends Activity {
 
         btnScanFace = findViewById(R.id.btnScanFace);
 
-        btnScanFace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+        btnScanFace.setOnClickListener(v -> {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         });
     }
@@ -54,16 +51,16 @@ public class LoginActivity extends Activity {
             faceBitmap = (Bitmap) extras.get("data");
 
             if (faceBitmap != null) {
-                Toast.makeText(this, "✅ Rostro Capturado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "✅ Rostro capturado", Toast.LENGTH_SHORT).show();
                 enviarRostroAlServidor(faceBitmap);
             } else {
-                Toast.makeText(this, "❌ No se Pudo Capturar el Rostro", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "❌ No se pudo capturar el rostro", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void enviarRostroAlServidor(Bitmap bitmap) {
-        String url = "http://192.168.1.101:5000/verificar"; // IP de tu red backend
+        String url = "http://192.168.1.101:5000/verificar";
 
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -79,7 +76,7 @@ public class LoginActivity extends Activity {
 
                         if (json.has("usuario")) {
                             String nombre = json.getString("usuario");
-                            Toast.makeText(LoginActivity.this, "Bienvenido: " + nombre, Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "✅ Bienvenido: " + nombre, Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("nombre", nombre);
@@ -88,13 +85,24 @@ public class LoginActivity extends Activity {
 
                         } else if (json.has("mensaje")) {
                             String mensaje = json.getString("mensaje");
-                            Toast.makeText(LoginActivity.this, mensaje, Toast.LENGTH_SHORT).show();
+
+                            switch (mensaje) {
+                                case "No se detectó ningún rostro":
+                                    Toast.makeText(LoginActivity.this, "❌ Rostro no detectado. Intenta de nuevo.", Toast.LENGTH_LONG).show();
+                                    break;
+                                case "No se encontró coincidencia":
+                                    Toast.makeText(LoginActivity.this, "⚠️ Rostro no reconocido. No existe en el sistema.", Toast.LENGTH_LONG).show();
+                                    break;
+                                default:
+                                    Toast.makeText(LoginActivity.this, "ℹ️ " + mensaje, Toast.LENGTH_LONG).show();
+                            }
+
                         } else {
-                            Toast.makeText(LoginActivity.this, "Respuesta inesperada: " + response, Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "⚠️ Respuesta inesperada del servidor", Toast.LENGTH_LONG).show();
                         }
 
                     } catch (Exception e) {
-                        Toast.makeText(LoginActivity.this, "❌ Error al procesar respuesta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "❌ Error procesando la respuesta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> Toast.makeText(LoginActivity.this, "❌ Error de conexión o servidor", Toast.LENGTH_LONG).show()
