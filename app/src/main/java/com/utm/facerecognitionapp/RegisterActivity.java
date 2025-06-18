@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public class RegisterActivity extends Activity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Uri imageUri;
     File imageFile;
-    private boolean yaRegistrado = false; // Flag para evitar múltiples envíos
+    private boolean yaRegistrado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class RegisterActivity extends Activity {
                 startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Error al crear archivo de imagen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "❌ Error al crear archivo de imagen", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -79,7 +81,7 @@ public class RegisterActivity extends Activity {
         }
 
         if (imageFile == null || !imageFile.exists()) {
-            Toast.makeText(this, "Debe escanear el rostro primero", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "⚠️ Debe escanear el rostro primero", Toast.LENGTH_SHORT).show();
             yaRegistrado = false;
             return;
         }
@@ -93,15 +95,20 @@ public class RegisterActivity extends Activity {
         }
 
         Bitmap rgbBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Bitmap resized = Bitmap.createScaledBitmap(rgbBitmap, 500, 500, true);
+        Bitmap resized = Bitmap.createScaledBitmap(rgbBitmap, 800, 800, true);
         String imagenBase64 = convertirABase64(resized);
+
+        if (imagenBase64 == null || imagenBase64.isEmpty()) {
+            Toast.makeText(this, "⚠️ Imagen vacía. Escanee nuevamente.", Toast.LENGTH_SHORT).show();
+            yaRegistrado = false;
+            return;
+        }
 
         enviarDatosAlServidor(username, imagenBase64);
     }
 
     private String convertirABase64(Bitmap bitmap) {
         if (bitmap == null) return null;
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
         byte[] imagenBytes = stream.toByteArray();
@@ -110,7 +117,6 @@ public class RegisterActivity extends Activity {
 
     private void enviarDatosAlServidor(String nombre, String imagenBase64) {
         String URL = "http://192.168.1.101:5000/registro";
-
         RequestQueue queue = Volley.newRequestQueue(this);
 
         StringRequest request = new StringRequest(Request.Method.POST, URL,
@@ -120,7 +126,7 @@ public class RegisterActivity extends Activity {
                         String mensaje = json.optString("mensaje", "✅ Registro exitoso");
                         Toast.makeText(RegisterActivity.this, mensaje, Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
-                        Toast.makeText(RegisterActivity.this, "Error al interpretar respuesta del servidor", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "❌ Error interpretando respuesta", Toast.LENGTH_SHORT).show();
                     } finally {
                         yaRegistrado = false;
                     }
@@ -137,14 +143,24 @@ public class RegisterActivity extends Activity {
 
             @Override
             public byte[] getBody() {
-                Map<String, String> datos = new HashMap<>();
-                datos.put("nombre", nombre);
-                datos.put("imagen", imagenBase64);
-
-                JSONObject jsonObject = new JSONObject(datos);
-                return jsonObject.toString().getBytes();
+                try {
+                    Map<String, String> datos = new HashMap<>();
+                    datos.put("nombre", nombre);
+                    datos.put("imagen", imagenBase64);
+                    JSONObject jsonObject = new JSONObject(datos);
+                    return jsonObject.toString().getBytes(StandardCharsets.UTF_8);
+                } catch (Exception e) {
+                    return null;
+                }
             }
         };
+
+        // ✅ Añadir retry policy para evitar errores por lentitud
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10000, // 10 segundos de espera
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
 
         queue.add(request);
     }

@@ -94,7 +94,7 @@ public class LoginActivity extends Activity {
                         }
 
                     } catch (Exception e) {
-                        Toast.makeText(LoginActivity.this, "Error al procesar respuesta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "❌ Error al procesar respuesta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> Toast.makeText(LoginActivity.this, "❌ Error de conexión o servidor", Toast.LENGTH_LONG).show()
