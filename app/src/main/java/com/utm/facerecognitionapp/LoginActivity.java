@@ -63,7 +63,7 @@ public class LoginActivity extends Activity {
     }
 
     private void enviarRostroAlServidor(Bitmap bitmap) {
-        String url = "http://192.168.1.101:5000/verificar"; // IP de tu backend
+        String url = "http://192.168.1.101:5000/verificar"; // IP de tu red backend
 
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

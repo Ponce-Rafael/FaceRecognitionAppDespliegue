@@ -13,21 +13,25 @@ def crear_tabla_usuarios():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT NOT NULL,
             rostro_vector BLOB NOT NULL,
+            rostro_imagen BLOB, 
             fecha_registro TEXT
         )
     ''')
     conn.commit()
     conn.close()
 
-def insertar_usuario(nombre, rostro_vector):
+def insertar_usuario(nombre, rostro_vector, rostro_imagen):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO usuarios (nombre, rostro_vector, fecha_registro)
-        VALUES (?, ?, ?)
-    ''', (nombre, rostro_vector, datetime.now().isoformat()))
+        INSERT INTO usuarios (nombre, rostro_vector, rostro_imagen, fecha_registro)
+        VALUES (?, ?, ?, ?)
+    ''', (nombre, rostro_vector, rostro_imagen, datetime.now().isoformat()))
+    user_id = cursor.lastrowid
     conn.commit()
     conn.close()
+    return user_id
+
 
 def obtener_usuarios():
     conn = sqlite3.connect(DB_PATH)

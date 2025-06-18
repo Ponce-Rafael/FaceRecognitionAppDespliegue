@@ -6,33 +6,16 @@ from PIL import Image
 import numpy as np
 import sqlite3
 import base64
-import io
+import cv2
 import os
+import io
 
 app = Flask(__name__)
 base_dir = os.path.dirname(__file__)
 DB_NAME = os.path.join(base_dir, "database.db")
 
-# Inicializar la base de datos
+# Inicializar tabla al arrancar
 crear_tabla_usuarios()
-
-def guardar_usuario(nombre, encoding):
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    rostro_blob = encoding.tobytes()
-    cursor.execute("INSERT INTO usuarios (nombre, rostro_vector, fecha_registro) VALUES (?, ?, ?)",
-                   (nombre, rostro_blob, fecha))
-    conn.commit()
-    conn.close()
-
-def cargar_usuarios():
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-    cursor.execute("SELECT nombre, rostro_vector FROM usuarios")
-    usuarios = cursor.fetchall()
-    conn.close()
-    return [(nombre, np.frombuffer(rostro_vector, dtype=np.float64)) for nombre, rostro_vector in usuarios]
 
 @app.route('/registro', methods=['POST'])
 def registrar_usuario():
@@ -52,10 +35,26 @@ def registrar_usuario():
         if not face_encodings:
             return jsonify({'error': 'No se detectó ningún rostro'}), 400
 
-        guardar_usuario(nombre, face_encodings[0])
+        # Convertimos nuevamente a formato JPEG para guardar la imagen
+        image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+        _, buffer = cv2.imencode('.jpg', image_bgr)
+        rostro_imagen_bytes = buffer.tobytes()
+
+        # 🟢 Insertar en la base de datos y obtener ID
+        user_id = insertar_usuario(nombre, face_encodings[0].tobytes(), rostro_imagen_bytes)
+
+        # 🟢 Guardar la imagen como archivo físico con ID y nombre
+        img_filename = f"{user_id}_{nombre}.jpg"
+        rostros_dir = os.path.join(base_dir, "rostros")
+        os.makedirs(rostros_dir, exist_ok=True)
+        img_path = os.path.join(rostros_dir, img_filename)
+        with open(img_path, 'wb') as f:
+            f.write(rostro_imagen_bytes)
+
         return jsonify({'mensaje': '✔️ Rostro registrado correctamente'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
 
 @app.route('/verificar', methods=['POST'])
 def verificar_usuario():
@@ -75,10 +74,10 @@ def verificar_usuario():
             return jsonify({'error': 'No se detectó ningún rostro'}), 400
 
         encoding_input = face_encodings[0]
-        usuarios = cargar_usuarios()
+        usuarios = obtener_usuarios()
 
-        mejores_distancias = [(nombre, face_recognition.face_distance([enc], encoding_input)[0])
-                              for nombre, enc in usuarios]
+        mejores_distancias = [(nombre, face_recognition.face_distance([np.frombuffer(vec, dtype=np.float64)], encoding_input)[0])
+                              for nombre, vec in usuarios]
 
         if not mejores_distancias:
             return jsonify({'mensaje': 'No hay usuarios registrados'}), 404
@@ -95,7 +94,3 @@ def verificar_usuario():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-
-
-
-
