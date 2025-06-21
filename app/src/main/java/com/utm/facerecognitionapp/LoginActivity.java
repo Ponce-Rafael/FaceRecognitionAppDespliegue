@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Base64;
-import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,7 +26,7 @@ import java.util.Map;
 public class LoginActivity extends Activity {
 
     ImageButton btnScanFace;
-    static final int REQUEST_IMAGE_CAPTURE = 2;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     Bitmap faceBitmap;
 
     @Override
@@ -34,11 +36,24 @@ public class LoginActivity extends Activity {
 
         btnScanFace = findViewById(R.id.btnScanFace);
 
+        // Usuario presiona botón para escanear
         btnScanFace.setOnClickListener(v -> {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
             }
+        });
+
+        // Subrayar y poner en rojo "Sign Up"
+        TextView tvSignUp = findViewById(R.id.tvSignUp);
+        SpannableString content = new SpannableString("Sing Up");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        tvSignUp.setText(content);
+        tvSignUp.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+
+        tvSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -76,7 +91,7 @@ public class LoginActivity extends Activity {
 
                         if (json.has("usuario")) {
                             String nombre = json.getString("usuario");
-                            Toast.makeText(LoginActivity.this, "✅ Bienvenido: " + nombre, Toast.LENGTH_LONG).show();
+                            // Toast.makeText(LoginActivity.this, "✅ Bienvenido: " + nombre, Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("nombre", nombre);

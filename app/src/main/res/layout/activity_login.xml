@@ -1,59 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#C37C7B7B">
 
-    <!-- Imagen de fondo -->
+    <!-- Fondo gimnasio -->
     <ImageView
-        android:id="@+id/backgroundImage"
+        android:id="@+id/bgImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/fondo" />
+        android:src="@drawable/gym" />
 
-    <!-- Título LOGIN -->
-    <TextView
-        android:id="@+id/labelLogin"
+    <!-- Logo superior -->
+    <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
         android:layout_centerHorizontal="true"
-        android:text="LOGIN"
-        android:textSize="50sp"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:elevation="8dp"
-        android:shadowColor="#80000000"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="3" />
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/logo_gym" />
 
-    <!-- Texto para indicar acción -->
-    <TextView
-        android:id="@+id/labelScanPrompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/labelLogin"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:text="Escanear Rostro"
-        android:textSize="25sp"
-        android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:textStyle="bold" />
+    <!-- Tarjeta flotante centrada -->
+    <LinearLayout
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="35dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/card_background"
+        android:elevation="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="30dp">
 
-    <!-- Botón con imagen para escanear rostro -->
-    <ImageButton
-        android:id="@+id/btnScanFace"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_below="@id/labelScanPrompt"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_border"
-        android:padding="20dp"
-        android:src="@drawable/ic_face_scan"
-        android:contentDescription="Escanear rostro" />
+        <!-- Texto bienvenida -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Welcome to Fittness.com"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
+        <!-- Texto gris -->
+
+        <!-- Botón escanear rostro -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:layout_marginBottom="24dp"
+            android:text="Escanear Rostro..."
+            android:textColor="#BEFFFFFF"
+            android:textSize="30sp" />
+
+        <ImageButton
+            android:id="@+id/btnScanFace"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="34dp"
+            android:background="@null"
+            android:contentDescription="Escanear rostro"
+            android:src="@drawable/ic_face_scan" />
+
+        <!-- Botón rojo Log in -->
+
+        <!-- Texto de redirección -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don’t have an account? "
+                android:layout_marginTop="60sp"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sing Up"
+                android:layout_marginTop="60sp"
+                android:textColor="#F44336"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

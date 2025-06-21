@@ -51,8 +51,9 @@ def registrar_usuario():
         with open(img_path, 'wb') as f:
             f.write(rostro_imagen_bytes)
 
-        return jsonify({'mensaje': '✔️ Rostro registrado correctamente'}), 200
+        return jsonify({'mensaje': '✅ Rostro registrado correctamente'}), 200
     except Exception as e:
+        print("❌ ERROR EN /registro:", str(e))
         return jsonify({'error': str(e)}), 500
     
 

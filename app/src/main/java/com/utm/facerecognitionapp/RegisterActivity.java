@@ -7,10 +7,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
@@ -32,9 +36,10 @@ import java.util.Map;
 
 public class RegisterActivity extends Activity {
 
-    EditText inputUsername;
-    Button btnRegister;
+    EditText etNombre;
+    Button btnSignUp;
     ImageButton btnScanFace;
+    TextView tvGoLogin;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     Uri imageUri;
@@ -46,10 +51,24 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        inputUsername = findViewById(R.id.inputUsername);
-        btnRegister = findViewById(R.id.btnRegister);
+        etNombre = findViewById(R.id.etNombre);
+        btnSignUp = findViewById(R.id.btnSignUp);
         btnScanFace = findViewById(R.id.btnScanFace);
+        tvGoLogin = findViewById(R.id.tvGoLogin);
 
+        // Subrayar y poner en rojo el texto "Log in"
+        TextView tvSignUp = findViewById(R.id.tvGoLogin);
+        SpannableString content = new SpannableString("Log in");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        tvSignUp.setText(content);
+
+        // Ir a Login
+        tvGoLogin.setOnClickListener(v -> {
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
+        });
+
+        // Escanear rostro
         btnScanFace.setOnClickListener(v -> {
             try {
                 imageFile = File.createTempFile("face_", ".jpg", getExternalCacheDir());
@@ -64,7 +83,7 @@ public class RegisterActivity extends Activity {
             }
         });
 
-        btnRegister.setOnClickListener(v -> {
+        btnSignUp.setOnClickListener(v -> {
             if (yaRegistrado) return;
             yaRegistrado = true;
             prepararRegistro();
@@ -72,10 +91,10 @@ public class RegisterActivity extends Activity {
     }
 
     private void prepararRegistro() {
-        String username = inputUsername.getText().toString().trim();
+        String nombre = etNombre.getText().toString().trim();
 
-        if (username.isEmpty()) {
-            inputUsername.setError("Ingrese un Nombre Válido");
+        if (nombre.isEmpty()) {
+            etNombre.setError("Ingrese un Nombre Válido");
             yaRegistrado = false;
             return;
         }
@@ -104,7 +123,7 @@ public class RegisterActivity extends Activity {
             return;
         }
 
-        enviarDatosAlServidor(username, imagenBase64);
+        enviarDatosAlServidor(nombre, imagenBase64);
     }
 
     private String convertirABase64(Bitmap bitmap) {
@@ -116,12 +135,7 @@ public class RegisterActivity extends Activity {
     }
 
     private void enviarDatosAlServidor(String nombre, String imagenBase64) {
-//      IP de mi casa
         String URL = "http://192.168.1.101:5000/registro";
-
-        /* IP de zona gamer
-        String URL = "http://192.168.140.236:5000/registro";
-        */
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -161,9 +175,8 @@ public class RegisterActivity extends Activity {
             }
         };
 
-        // ✅ Añadir retry policy para evitar errores por lentitud
         request.setRetryPolicy(new DefaultRetryPolicy(
-                10000, // 10 segundos de espera
+                30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
         ));
