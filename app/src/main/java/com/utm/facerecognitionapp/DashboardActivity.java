@@ -13,10 +13,5 @@ public class DashboardActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        txtNombre = findViewById(R.id.txtNombreUsuario);
-
-        // Obtener el nombre desde el Intent
-        String nombre = getIntent().getStringExtra("nombre");
-        txtNombre.setText("@" + nombre);
     }
 }

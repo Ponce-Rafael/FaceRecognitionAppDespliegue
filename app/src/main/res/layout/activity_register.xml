@@ -103,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:text="Already have an account? "
                 android:textColor="#000000"
+                android:textStyle="bold"
                 android:textSize="18sp" />
 
             <TextView
@@ -111,8 +112,7 @@
                 android:layout_height="wrap_content"
                 android:text="Log in"
                 android:textColor="#F44336"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

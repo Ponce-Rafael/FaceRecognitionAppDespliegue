@@ -2,7 +2,7 @@
     android:shape="rectangle">
 
     <!-- Blanco con 40% de opacidad (hex: 66) -->
-    <solid android:color="#66FFFFFF" />
+    <solid android:color="#33FFFFFF" />
 
     <!-- Esquinas redondeadas -->
     <corners android:radius="30dp" />

@@ -44,12 +44,11 @@ public class LoginActivity extends Activity {
             }
         });
 
-        // Subrayar y poner en rojo "Sign Up"
+        // Subrayar y poner en rojo el texto "Log in"
         TextView tvSignUp = findViewById(R.id.tvSignUp);
-        SpannableString content = new SpannableString("Sing Up");
+        SpannableString content = new SpannableString("Sign up");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         tvSignUp.setText(content);
-        tvSignUp.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
 
         tvSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
