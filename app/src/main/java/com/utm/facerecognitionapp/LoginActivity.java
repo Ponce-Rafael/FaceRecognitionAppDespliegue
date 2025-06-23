@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
             }
         });
 
-        // Subrayar y poner en rojo el texto "Log in"
+        // Subrayar y poner en rojo el texto "Sign up"
         TextView tvSignUp = findViewById(R.id.tvSignUp);
         SpannableString content = new SpannableString("Sign up");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -74,6 +74,7 @@ public class LoginActivity extends Activity {
     }
 
     private void enviarRostroAlServidor(Bitmap bitmap) {
+
         String url = "http://192.168.1.101:5000/verificar";
 
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
@@ -88,9 +89,16 @@ public class LoginActivity extends Activity {
                     try {
                         JSONObject json = new JSONObject(response);
 
-                        if (json.has("usuario")) {
+                        if (json.has("usuario") && json.has("usuario_id")) {
                             String nombre = json.getString("usuario");
-                            // Toast.makeText(LoginActivity.this, "✅ Bienvenido: " + nombre, Toast.LENGTH_LONG).show();
+                            int usuarioId = json.getInt("usuario_id");
+
+                            // 🔐 Guardar nombre e ID en SharedPreferences
+                            getSharedPreferences("usuario", MODE_PRIVATE)
+                                    .edit()
+                                    .putString("nombre", nombre)
+                                    .putInt("usuario_id", usuarioId)
+                                    .apply();
 
                             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                             intent.putExtra("nombre", nombre);

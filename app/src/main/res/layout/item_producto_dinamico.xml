@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="24dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#33FFFFFF"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/imgProducto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:background="@android:color/transparent" />
+
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre del producto"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/txtPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="$0.00"
+        android:textAlignment="textEnd"
+        android:textColor="#FF4444"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="8dp">
+
+        <ImageButton
+            android:id="@+id/btnFavorito"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:tint="#ffffffff"
+            android:background="@android:color/transparent"
+            android:src="@drawable/heart"
+            android:contentDescription="Favorito" />
+
+        <ImageButton
+            android:id="@+id/btnAgregarCarrito"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"
+            android:src="@drawable/cart"
+            android:contentDescription="Carrito" />
+    </LinearLayout>
+</LinearLayout>

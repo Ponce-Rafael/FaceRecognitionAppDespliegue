@@ -1,337 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FF1C1C1E"> <!-- Fondo oscuro -->
+    android:layout_height="match_parent">
 
-    <!-- Fondo imagen gimnasio (opcional) -->
-    <ImageView
-        android:id="@+id/bgImage"
+    <!-- CONTENIDO PRINCIPAL -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/gym"
-        android:alpha="0.4" /> <!-- Oscurecido -->
+        android:background="#FF1C1C1E">
 
-<!--    Menu de arriba  -->
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:paddingHorizontal="12dp"
-        android:background="@android:color/transparent">
+        <!-- Fondo imagen gimnasio -->
 
-        <!-- Botón Menú alineado a la izquierda -->
-        <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentStart="true"
-            android:background="@android:color/transparent"
-            android:src="@drawable/menu"
-            android:contentDescription="Menú"
-            android:scaleType="centerInside"
-            android:adjustViewBounds="true" />
+        <!-- Header -->
+        <ImageView
+            android:id="@+id/bgImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.4"
+            android:scaleType="centerCrop"
+            android:src="@drawable/gym" />
 
-        <!-- Botón Carrito alineado a la derecha -->
-        <ImageButton
-            android:id="@+id/btnCarrito"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:background="@android:color/transparent"
-            android:src="@drawable/cart"
-            android:contentDescription="Carrito"
-            android:scaleType="centerInside"
-            android:adjustViewBounds="true" />
-
-        <!-- Logo centrado horizontalmente y debajo de los botones -->
-        <TextView
-            android:id="@+id/tvLogo"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnMenu"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:text="FITNESS.COM"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:paddingTop="24dp"
+            android:paddingHorizontal="12dp"
+            android:background="@android:color/transparent">
 
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/menu"
+                android:contentDescription="Menú"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true" />
 
+            <ImageButton
+                android:id="@+id/btnCarrito"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/cart"
+                android:contentDescription="Carrito"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true" />
 
+            <TextView
+                android:id="@+id/tvLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnMenu"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="FITNESS.COM"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
-
-
-
-
-
-
-
-
-    <!--    Barra de Busqueda   -->
-    <EditText
-        android:id="@+id/etBuscar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_below="@id/header"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/bg_search"
-        android:hint="Buscar productos..."
-        android:paddingHorizontal="16dp"
-        android:drawableStart="@drawable/search"
-        android:drawablePadding="10dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#CCCCCC"
-        android:inputType="text" />
-
-<!--    Barra de Navegación     -->
-    <LinearLayout
-        android:id="@+id/tabCategorias"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etBuscar"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:paddingHorizontal="24dp">
-
-        <TextView
-            android:id="@+id/tabSupplements"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:text="Supplements"
-            android:layout_marginBottom="20dp"
-            android:textColor="#FF4444"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tabAccessories"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:text="Accessories"
-            android:layout_marginBottom="30dp"
-            android:textColor="#AAAAAA"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!-- Lista horizontal de productos -->
-    <HorizontalScrollView
-        android:id="@+id/scrollProductos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tabCategorias"
-        android:layout_marginTop="20dp"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:id="@+id/containerProductos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+        <!-- Barra de búsqueda -->
+        <EditText
+            android:id="@+id/etBuscar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@id/header"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_search"
+            android:hint="Buscar..."
             android:paddingHorizontal="16dp"
-            android:paddingBottom="20dp">
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#CCCCCC"
+            android:inputType="text" />
 
-            <!-- Producto 1 -->
-            <LinearLayout
-                android:layout_width="200dp"
+        <!-- Tabs -->
+        <LinearLayout
+            android:id="@+id/tabCategorias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etBuscar"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="24dp">
+
+            <TextView
+                android:id="@+id/tabSupplements"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="4dp"
-                android:background="#33FFFFFF"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp">
+                android:layout_weight="1"
+                android:text="Suplementos"
+                android:textColor="#FF4444"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@drawable/bg_image_rounded"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/protein" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Whey Protein 2 kg"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="$94.99"
-                    android:textAlignment="textEnd"
-                    android:textColor="#FF4444"
-                    android:textSize="13sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="6dp"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="4dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:src="@drawable/heart"
-                        android:contentDescription="Favorito" />
-
-                    <!-- Espacio entre los íconos -->
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:src="@drawable/cart"
-                        android:contentDescription="Agregar al carrito" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Producto 2 -->
-            <LinearLayout
-                android:layout_width="200dp"
+            <TextView
+                android:id="@+id/tabAccessories"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="4dp"
-                android:background="#33FFFFFF"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@drawable/bg_image_rounded"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/creatine" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Creatine Monohydrate 300 g"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="$15.99"
-                    android:textAlignment="textEnd"
-                    android:textColor="#FF4444"
-                    android:textSize="13sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="6dp"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="4dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:src="@drawable/heart"
-                        android:contentDescription="Favorito" />
-
-                    <!-- Espacio entre los íconos -->
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:src="@drawable/cart"
-                        android:contentDescription="Agregar al carrito" />
-                </LinearLayout>
-
-            </LinearLayout>
-
+                android:layout_weight="1"
+                android:text="Accesorios"
+                android:textColor="#AAAAAA"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
         </LinearLayout>
 
-    </HorizontalScrollView>
+        <!-- Lista de productos -->
+        <HorizontalScrollView
+            android:id="@+id/scrollProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tabCategorias"
+            android:layout_marginTop="20dp"
+            android:scrollbars="none">
 
-    <!-- Menú de navegación inferior -->
-    <LinearLayout
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:background="@drawable/nav_end"
-        android:elevation="6dp"
-        android:gravity="center"
-        android:weightSum="4"
-        android:clipToPadding="false">
+            <LinearLayout
+                android:id="@+id/containerProductos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="20dp">
+            </LinearLayout>
+        </HorizontalScrollView>
 
-    <ImageButton
-        android:id="@+id/btnNavHome"
-        android:layout_width="0dp"
+        <!-- Menú inferior -->
+        <LinearLayout
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@drawable/nav_end"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:weightSum="4"
+            android:clipToPadding="false">
+
+            <ImageButton
+                android:id="@+id/btnNavHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/home"
+                android:background="@android:color/transparent"
+                android:tint="#FF4444" />
+
+            <ImageButton
+                android:id="@+id/btnNavFav"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/heart"
+                android:background="@android:color/transparent"
+                android:tint="#FFFFFF" />
+
+            <ImageButton
+                android:id="@+id/btnNavCart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/update"
+                android:background="@android:color/transparent"
+                android:tint="#FFFFFF" />
+
+            <ImageButton
+                android:id="@+id/btnNavPerfil"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/user"
+                android:background="@android:color/transparent"
+                android:tint="#FFFFFF" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- MENÚ LATERAL -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/home"
-        android:background="@android:color/transparent"
-        android:contentDescription="Home"
-        android:tint="#FF4444" />
-
-    <ImageButton
-        android:id="@+id/btnNavFav"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/heart"
-        android:background="@android:color/transparent"
-        android:contentDescription="Favoritos"
-        android:tint="#FFFFFF" />
-
-    <ImageButton
-        android:id="@+id/btnNavCart"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/update"
-        android:background="@android:color/transparent"
-        android:contentDescription="Carrito"
-        android:tint="#FFFFFF" />
-
-    <ImageButton
-        android:id="@+id/btnNavPerfil"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/user"
-        android:background="@android:color/transparent"
-        android:contentDescription="Perfil"
-        android:tint="#FFFFFF" />
-</LinearLayout>
-
-</RelativeLayout>
-
+        android:layout_gravity="start"
+        android:background="#FFFFFF"
+        app:menu="@menu/menu_drawer" />
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -135,6 +135,7 @@ public class RegisterActivity extends Activity {
     }
 
     private void enviarDatosAlServidor(String nombre, String imagenBase64) {
+
         String URL = "http://192.168.1.101:5000/registro";
 
         RequestQueue queue = Volley.newRequestQueue(this);

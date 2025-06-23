@@ -3,7 +3,5 @@
     <domain-config cleartextTrafficPermitted="true">
 <!-- IP de mi casa -->
         <domain includeSubdomains="true">192.168.1.101</domain>
-<!-- IP de zona gamer -->
-<!--        <domain includeSubdomains="true">192.168.1.101</domain>-->
     </domain-config>
 </network-security-config>
