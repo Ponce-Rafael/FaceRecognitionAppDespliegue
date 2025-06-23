@@ -1,5 +1,6 @@
 package com.utm.facerecognitionapp;
 
+import com.utm.facerecognitionapp.AppConfig;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -85,7 +86,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
         }
 
         void eliminarDelCarrito(int carritoId) {
-            String url = "http://192.168.1.101:5000/carrito/eliminar";
+            String url = AppConfig.BASE_URL + "/carrito/eliminar";
             JSONObject json = new JSONObject();
             try {
                 json.put("carrito_id", carritoId);

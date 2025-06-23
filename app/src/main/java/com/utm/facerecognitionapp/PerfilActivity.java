@@ -2,7 +2,7 @@ package com.utm.facerecognitionapp;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import android.content.SharedPreferences; // ← Este es el que faltaba
+import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 

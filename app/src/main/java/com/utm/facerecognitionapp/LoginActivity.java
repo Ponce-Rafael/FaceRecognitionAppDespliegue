@@ -1,5 +1,6 @@
 package com.utm.facerecognitionapp;
 
+import com.utm.facerecognitionapp.AppConfig;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -75,7 +76,7 @@ public class LoginActivity extends Activity {
 
     private void enviarRostroAlServidor(Bitmap bitmap) {
 
-        String url = "http://192.168.1.101:5000/verificar";
+        String url = AppConfig.BASE_URL + "/verificar";
 
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

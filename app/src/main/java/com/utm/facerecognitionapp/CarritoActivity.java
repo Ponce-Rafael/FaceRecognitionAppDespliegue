@@ -1,5 +1,6 @@
 package com.utm.facerecognitionapp;
 
+import com.utm.facerecognitionapp.AppConfig;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -43,7 +44,7 @@ public class CarritoActivity extends AppCompatActivity {
         btnFinalizar = findViewById(R.id.btnFinalizarCompra);
 
         queue = Volley.newRequestQueue(this);
-        usuarioId = getSharedPreferences("usuario", MODE_PRIVATE).getInt("id", -1);
+        usuarioId = getSharedPreferences("usuario", MODE_PRIVATE).getInt("usuario_id", -1);
 
         obtenerProductosCarrito();
 
@@ -57,7 +58,7 @@ public class CarritoActivity extends AppCompatActivity {
                 return;
             }
 
-            String url = "http://192.168.1.101:5000/orden/finalizar";
+            String url = AppConfig.BASE_URL + "/orden/finalizar";
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json,
                     response -> {
                         Toast.makeText(this, "✅ Compra finalizada", Toast.LENGTH_SHORT).show();
@@ -80,7 +81,7 @@ public class CarritoActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String url = "http://192.168.1.101:5000/carrito";
+        String url = AppConfig.BASE_URL + "/carrito";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json,
                 response -> {
                     try {
@@ -122,7 +123,7 @@ public class CarritoActivity extends AppCompatActivity {
                 error -> Toast.makeText(this, "❌ No se pudo cargar el carrito", Toast.LENGTH_SHORT).show()
         );
 
-        String urlTotal = "http://192.168.1.101:5000/carrito/total";
+        String urlTotal = AppConfig.BASE_URL + "/carrito/total";
         JsonObjectRequest totalRequest = new JsonObjectRequest(Request.Method.POST, urlTotal, json,
                 response -> {
                     double total = response.optDouble("total", 0.0);
@@ -136,7 +137,7 @@ public class CarritoActivity extends AppCompatActivity {
     }
 
     private void eliminarItemCarrito(int carritoId) {
-        String url = "http://192.168.1.101:5000/carrito/eliminar/" + carritoId;
+        String url = AppConfig.BASE_URL + "/carrito/eliminar/" + carritoId;
 
         StringRequest request = new StringRequest(Request.Method.DELETE, url,
                 response -> obtenerProductosCarrito(),

@@ -47,17 +47,17 @@ if __name__ == "__main__":
 
     # Insertar solo los nuevos
     
-    insertar_producto(
-        "Camisa Azul",
-        11.99,
-        os.path.join(base_dir, "image", "ropa", "camisaAzul.png"),
-        "accesorios"
-    )
+    # insertar_producto(
+    #     "Camisa Azul",
+    #     11.99,
+    #     os.path.join(base_dir, "image", "ropa", "camisaAzul.png"),
+    #     "accesorios"
+    # )
 
     insertar_producto(
         "Creatina RC 300g",
         25.99,
-        os.path.join(base_dir, "image", "suplementos", "creatine.png"),
+        os.path.join(base_dir, "image", "suplementos", "creatine.pngg"),
         "suplementos"
     )
 

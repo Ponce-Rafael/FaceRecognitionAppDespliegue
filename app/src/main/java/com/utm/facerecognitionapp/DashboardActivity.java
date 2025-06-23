@@ -1,5 +1,7 @@
 package com.utm.facerecognitionapp;
 
+import com.utm.facerecognitionapp.AppConfig;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,22 +34,27 @@ import org.json.JSONObject;
 public class DashboardActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
-    ImageButton btnMenu, btnNavCart, btnCarrito;
+    ImageButton btnMenu, btnNavCart, btnCarrito, btnNavFav;
     LinearLayout containerProductos;
     TextView tabSupplements, tabAccessories;
     EditText etBuscar;
 
     private String categoriaActual = "suplementos";
+    private int usuarioId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        // Recuperar el ID del usuario desde SharedPreferences
+        usuarioId = getSharedPreferences("usuario", MODE_PRIVATE).getInt("usuario_id", -1);
+
         drawerLayout = findViewById(R.id.drawerLayout);
         btnMenu = findViewById(R.id.btnMenu);
         btnNavCart = findViewById(R.id.btnNavCart);
         btnCarrito = findViewById(R.id.btnCarrito);
+        btnNavFav = findViewById(R.id.btnNavFav);
         containerProductos = findViewById(R.id.containerProductos);
         tabSupplements = findViewById(R.id.tabSupplements);
         tabAccessories = findViewById(R.id.tabAccessories);
@@ -61,7 +68,9 @@ public class DashboardActivity extends AppCompatActivity {
             } else if (id == R.id.item_pedidos) {
                 startActivity(new Intent(this, PedidosActivity.class));
             } else if (id == R.id.item_favoritos) {
-                startActivity(new Intent(this, FavoritosActivity.class));
+                Intent intent = new Intent(this, FavoritosActivity.class);
+                intent.putExtra("usuario_id", usuarioId); // ✅ También aquí
+                startActivity(intent);
             } else if (id == R.id.item_logout) {
                 getSharedPreferences("usuario", MODE_PRIVATE).edit().clear().apply();
                 Intent intent = new Intent(this, MainActivity.class);
@@ -77,6 +86,13 @@ public class DashboardActivity extends AppCompatActivity {
 
         btnCarrito.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, CarritoActivity.class);
+            intent.putExtra("usuario_id", usuarioId); // Si lo necesitas
+            startActivity(intent);
+        });
+
+        btnNavFav.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, FavoritosActivity.class);
+            intent.putExtra("usuario_id", usuarioId);
             startActivity(intent);
         });
 
@@ -116,15 +132,13 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void cargarProductosPorCategoria(String categoria) {
-        String url = "http://192.168.1.101:5000/productos/categoria/" + categoria;
+        String url = AppConfig.BASE_URL + "/productos/categoria/" + categoria;
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     containerProductos.removeAllViews();
                     try {
-                        int usuarioId = getSharedPreferences("usuario", MODE_PRIVATE).getInt("id", -1);
-
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject prod = response.getJSONObject(i);
                             int productoId = prod.getInt("id");
@@ -152,7 +166,7 @@ public class DashboardActivity extends AppCompatActivity {
                             }
 
                             btnFavorito.setOnClickListener(v -> {
-                                String urlFav = "http://192.168.1.101:5000/favoritos/agregar";
+                                String urlFav = AppConfig.BASE_URL + "/favoritos/agregar";
                                 JSONObject json = new JSONObject();
                                 try {
                                     json.put("usuario_id", usuarioId);
@@ -169,7 +183,7 @@ public class DashboardActivity extends AppCompatActivity {
                             });
 
                             btnAgregarCarrito.setOnClickListener(v -> {
-                                String urlCarrito = "http://192.168.1.101:5000/carrito/agregar";
+                                String urlCarrito = AppConfig.BASE_URL + "/carrito/agregar";
                                 JSONObject json = new JSONObject();
                                 try {
                                     json.put("usuario_id", usuarioId);
@@ -202,7 +216,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void buscarProductos(String texto) {
-        String url = "http://192.168.1.101:5000/productos/buscar/" + texto;
+        String url = AppConfig.BASE_URL + "/productos/buscar/" + texto;
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,

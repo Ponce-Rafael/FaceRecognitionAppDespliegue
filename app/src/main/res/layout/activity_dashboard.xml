@@ -156,7 +156,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/home"
                 android:background="@android:color/transparent"
-                android:tint="#FF4444" />
+                android:tint="#FFFFFF" />
 
             <ImageButton
                 android:id="@+id/btnNavFav"

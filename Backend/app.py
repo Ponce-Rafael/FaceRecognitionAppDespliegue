@@ -15,14 +15,12 @@ base_dir = os.path.dirname(__file__)
 DB_NAME = os.path.join(base_dir, "database.db")
 
 # Inicializar tabla al arrancar
-crear_tabla_usuarios()
-
+crear_tablas()
 
 # --------------------------------------#
-# Usuario reconocimiento facial
+# Usuarios
 # --------------------------------------#
 
-# Ruta para registrar usuarios
 @app.route('/registro', methods=['POST'])
 def registrar_usuario():
     try:
@@ -41,15 +39,12 @@ def registrar_usuario():
         if not face_encodings:
             return jsonify({'error': 'No se detectó ningún rostro'}), 400
 
-        # Convertimos nuevamente a formato JPEG para guardar la imagen
         image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
         _, buffer = cv2.imencode('.jpg', image_bgr)
         rostro_imagen_bytes = buffer.tobytes()
 
-        # 🟢 Insertar en la base de datos y obtener ID
         user_id = insertar_usuario(nombre, face_encodings[0].tobytes(), rostro_imagen_bytes)
 
-        # 🟢 Guardar la imagen como archivo físico con ID y nombre
         img_filename = f"{user_id}_{nombre}.jpg"
         rostros_dir = os.path.join(base_dir, "rostros")
         os.makedirs(rostros_dir, exist_ok=True)
@@ -61,8 +56,7 @@ def registrar_usuario():
     except Exception as e:
         print("❌ ERROR EN /registro:", str(e))
         return jsonify({'error': str(e)}), 500
-    
-# Ruta para verificar usuarios
+
 @app.route('/verificar', methods=['POST'])
 def verificar_usuario():
     try:
@@ -105,11 +99,10 @@ def verificar_usuario():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# --------------------------------------#
-# Carrito de compras
-# --------------------------------------#
+# --------------------------------------- #
+# Carrito
+# --------------------------------------- #
 
-#  Ruta para agregar al carrito
 @app.route('/carrito/agregar', methods=['POST'])
 def agregar_carrito():
     try:
@@ -128,8 +121,7 @@ def agregar_carrito():
         return jsonify({'error': str(ve)}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
-# Ruta para ver el carrito
+
 @app.route('/carrito', methods=['POST'])
 def obtener_carrito():
     try:
@@ -175,7 +167,6 @@ def eliminar_item_carrito(carrito_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Ruta para consultar el total
 @app.route('/carrito/total', methods=['POST'])
 def total_carrito():
     try:
@@ -192,12 +183,11 @@ def total_carrito():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
-# --------------------------------------#
-# Productos
-# --------------------------------------#
 
-# Ruta para mostrar todos los productos
+# --------------------------------------- #
+# Productos
+# --------------------------------------- #
+
 @app.route('/productos', methods=['GET'])
 def obtener_productos():
     conn = sqlite3.connect(DB_NAME)
@@ -219,8 +209,6 @@ def obtener_productos():
         })
 
     return jsonify(lista), 200
-
-import base64
 
 @app.route('/productos/categoria/<categoria>', methods=['GET'])
 def productos_por_categoria(categoria):
@@ -277,11 +265,111 @@ def buscar_productos(texto):
 
     return jsonify(lista), 200
 
-# --------------------------------------#
-# Ordenes
-# --------------------------------------#
+# --------------------------------------- #
+# Favoritos
+# --------------------------------------- #
 
-# Ruta para finalizar la orden
+@app.route('/favoritos/agregar', methods=['POST'])
+def agregar_favorito():
+    data = request.get_json()
+    usuario_id = data.get("usuario_id")
+    producto_id = data.get("producto_id")
+
+    if not usuario_id or not producto_id:
+        return jsonify({"error": "Faltan datos"}), 400
+
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("SELECT 1 FROM favoritos WHERE usuario_id=? AND producto_id=?", (usuario_id, producto_id))
+    if cursor.fetchone():
+        conn.close()
+        return jsonify({"mensaje": "Ya está en favoritos"}), 200
+
+    cursor.execute("INSERT INTO favoritos (usuario_id, producto_id) VALUES (?, ?)", (usuario_id, producto_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"mensaje": "Agregado a favoritos"}), 200
+
+@app.route('/favoritos/<int:usuario_id>', methods=['GET'])
+def obtener_favoritos(usuario_id):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT p.nombre, p.precio, p.imagen
+        FROM favoritos f
+        JOIN productos p ON f.producto_id = p.id
+        WHERE f.usuario_id = ?
+    """, (usuario_id,))
+    productos = cursor.fetchall()
+    conn.close()
+
+    lista = []
+    for nombre, precio, imagen_bytes in productos:
+        imagen_base64 = base64.b64encode(imagen_bytes).decode('utf-8') if imagen_bytes else ''
+        lista.append({
+            "nombre": nombre,
+            "precio": precio,
+            "imagen": imagen_base64
+        })
+
+    return jsonify({"items": lista})
+
+@app.route('/favoritos/eliminar/<int:usuario_id>/<string:nombre_producto>', methods=['DELETE'])
+def eliminar_favorito(usuario_id, nombre_producto):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("""
+        DELETE FROM favoritos
+        WHERE usuario_id = ? AND producto_id IN (
+            SELECT id FROM productos WHERE nombre = ?
+        )
+    """, (usuario_id, nombre_producto))
+    conn.commit()
+    conn.close()
+    return jsonify({"mensaje": "Favorito eliminado"}), 200
+
+
+# --------------------------------------- #
+# Ordenes
+# --------------------------------------- #
+
+@app.route('/ordenes/<int:usuario_id>', methods=['GET'])
+def obtener_ordenes(usuario_id):
+    try:
+        conn = sqlite3.connect(DB_NAME)
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT o.id, o.fecha, o.total, p.nombre, od.cantidad, od.subtotal
+            FROM ordenes o
+            JOIN orden_detalle od ON o.id = od.orden_id
+            JOIN productos p ON od.producto_id = p.id
+            WHERE o.usuario_id = ?
+            ORDER BY o.fecha DESC
+        """, (usuario_id,))
+        resultados = cursor.fetchall()
+        conn.close()
+
+        ordenes_dict = {}
+        for orden_id, fecha, total, producto, cantidad, subtotal in resultados:
+            if orden_id not in ordenes_dict:
+                ordenes_dict[orden_id] = {
+                    "id": orden_id,
+                    "fecha": fecha,
+                    "total": total,
+                    "items": []
+                }
+            ordenes_dict[orden_id]["items"].append({
+                "producto": producto,
+                "cantidad": cantidad,
+                "subtotal": subtotal
+            })
+
+        return jsonify({"ordenes": list(ordenes_dict.values())}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/orden/finalizar', methods=['POST'])
 def finalizar_orden():
     try:
@@ -291,7 +379,6 @@ def finalizar_orden():
         conn = sqlite3.connect(DB_NAME)
         cursor = conn.cursor()
 
-        # Obtener items del carrito del usuario
         cursor.execute("""
             SELECT producto_id, cantidad, subtotal
             FROM carrito
@@ -302,10 +389,7 @@ def finalizar_orden():
         if not items:
             return jsonify({"error": "El carrito está vacío"}), 400
 
-        # Calcular total
         total = sum(sub for _, _, sub in items)
-
-        # Insertar en orden
         fecha = datetime.now().isoformat()
         cursor.execute("""
             INSERT INTO ordenes (usuario_id, total, fecha)
@@ -313,23 +397,20 @@ def finalizar_orden():
         """, (usuario_id, total, fecha))
         orden_id = cursor.lastrowid
 
-        # Insertar detalles
         for producto_id, cantidad, subtotal in items:
             cursor.execute("""
                 INSERT INTO orden_detalle (orden_id, producto_id, cantidad, subtotal)
                 VALUES (?, ?, ?, ?)
             """, (orden_id, producto_id, cantidad, subtotal))
 
-        # Vaciar carrito
         cursor.execute("DELETE FROM carrito WHERE usuario_id = ?", (usuario_id,))
-
         conn.commit()
         conn.close()
         return jsonify({"mensaje": "Orden finalizada con éxito"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+    
 
 
 if __name__ == '__main__':

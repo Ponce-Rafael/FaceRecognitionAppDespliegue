@@ -5,12 +5,13 @@ import os
 DB_PATH = os.path.join(os.path.dirname(__file__), "database.db")
 
 # -------------------------
-# TABLAS
+# CREACIÓN DE TABLAS
 # -------------------------
 
-def crear_tabla_usuarios():
+def crear_tablas():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,12 +21,7 @@ def crear_tabla_usuarios():
             fecha_registro TEXT
         )
     ''')
-    conn.commit()
-    conn.close()
 
-def crear_tabla_productos():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS productos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,12 +32,7 @@ def crear_tabla_productos():
             fecha_registro TEXT
         )
     ''')
-    conn.commit()
-    conn.close()
 
-def crear_tabla_favoritos():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS favoritos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,12 +44,7 @@ def crear_tabla_favoritos():
             FOREIGN KEY (producto_id) REFERENCES productos(id)
         )
     ''')
-    conn.commit()
-    conn.close()
 
-def crear_tabla_carrito():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS carrito (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -71,12 +57,7 @@ def crear_tabla_carrito():
             FOREIGN KEY (producto_id) REFERENCES productos(id)
         )
     ''')
-    conn.commit()
-    conn.close()
 
-def crear_tabla_ordenes():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS ordenes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,12 +67,7 @@ def crear_tabla_ordenes():
             FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
         )
     ''')
-    conn.commit()
-    conn.close()
 
-def crear_tabla_orden_detalle():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS orden_detalle (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -103,11 +79,12 @@ def crear_tabla_orden_detalle():
             FOREIGN KEY (producto_id) REFERENCES productos(id)
         )
     ''')
+
     conn.commit()
     conn.close()
 
 # -------------------------
-# INSERCIONES
+# INSERCIONES ÚTILES
 # -------------------------
 
 def insertar_usuario(nombre, rostro_vector, rostro_imagen):
@@ -122,37 +99,10 @@ def insertar_usuario(nombre, rostro_vector, rostro_imagen):
     conn.close()
     return user_id
 
-def insertar_producto(nombre, precio, imagen, categoria):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO productos (nombre, precio, imagen, categoria, fecha_registro)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (nombre, precio, imagen, categoria, datetime.now().isoformat()))
-    producto_id = cursor.lastrowid
-    conn.commit()
-    conn.close()
-    return producto_id
-
-def insertar_a_favoritos(usuario_id, producto_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    try:
-        cursor.execute('''
-            INSERT INTO favoritos (usuario_id, producto_id, fecha)
-            VALUES (?, ?, ?)
-        ''', (usuario_id, producto_id, datetime.now().isoformat()))
-        conn.commit()
-    except sqlite3.IntegrityError:
-        print("Este producto ya está en favoritos.")
-    finally:
-        conn.close()
-
 def insertar_al_carrito(usuario_id, producto_id, cantidad):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    # Obtener el precio del producto
     cursor.execute("SELECT precio FROM productos WHERE id = ?", (producto_id,))
     row = cursor.fetchone()
     if not row:
@@ -160,8 +110,6 @@ def insertar_al_carrito(usuario_id, producto_id, cantidad):
         raise ValueError("Producto no encontrado")
 
     precio = row[0]
-
-    # Verificar si ya existe el producto en el carrito del usuario
     cursor.execute("SELECT id, cantidad FROM carrito WHERE usuario_id = ? AND producto_id = ?", (usuario_id, producto_id))
     existente = cursor.fetchone()
 
@@ -187,35 +135,9 @@ def insertar_al_carrito(usuario_id, producto_id, cantidad):
     return round(precio * cantidad, 2)
 
 # -------------------------
-# CONSULTAS
+# USO DIRECTO PARA TESTING
 # -------------------------
 
-def obtener_usuarios():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT nombre, rostro_vector FROM usuarios")
-    usuarios = cursor.fetchall()
-    conn.close()
-    return usuarios
-
-def obtener_favoritos(usuario_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute('''
-        SELECT p.id, p.nombre, p.precio, p.categoria
-        FROM productos p
-        JOIN favoritos f ON p.id = f.producto_id
-        WHERE f.usuario_id = ?
-    ''', (usuario_id,))
-    favoritos = cursor.fetchall()
-    conn.close()
-    return favoritos
-
 if __name__ == "__main__":
-    crear_tabla_usuarios()
-    crear_tabla_productos()
-    crear_tabla_favoritos()
-    crear_tabla_carrito()
-    crear_tabla_ordenes()
-    crear_tabla_orden_detalle()
-    print("Tablas creadas correctamente.")
+    crear_tablas()
+    print("✅ Tablas creadas correctamente.")

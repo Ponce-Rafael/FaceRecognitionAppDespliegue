@@ -1,5 +1,6 @@
 package com.utm.facerecognitionapp;
 
+import com.utm.facerecognitionapp.AppConfig;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -136,7 +137,7 @@ public class RegisterActivity extends Activity {
 
     private void enviarDatosAlServidor(String nombre, String imagenBase64) {
 
-        String URL = "http://192.168.1.101:5000/registro";
+        String URL = AppConfig.BASE_URL + "/registro";
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
