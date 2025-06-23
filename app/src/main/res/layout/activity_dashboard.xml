@@ -32,8 +32,8 @@
 
             <ImageButton
                 android:id="@+id/btnMenu"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
                 android:layout_alignParentStart="true"
                 android:background="@android:color/transparent"
                 android:src="@drawable/menu"
@@ -43,11 +43,12 @@
 
             <ImageButton
                 android:id="@+id/btnCarrito"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentEnd="true"
                 android:background="@android:color/transparent"
                 android:src="@drawable/cart"
+                android:tint="#ffffffff"
                 android:contentDescription="Carrito"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true" />

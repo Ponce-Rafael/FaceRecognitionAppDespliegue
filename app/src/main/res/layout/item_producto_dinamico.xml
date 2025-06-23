@@ -39,16 +39,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_marginTop="8dp">
+        android:gravity="center"
+        android:paddingHorizontal="-47dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:weightSum="2">
 
         <ImageButton
             android:id="@+id/btnFavorito"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
+            android:layout_marginEnd="8dp"
             android:scaleType="centerInside"
-            android:tint="#ffffffff"
+            android:tint="#FFFFFFFF"
             android:background="@android:color/transparent"
             android:src="@drawable/heart"
             android:contentDescription="Favorito" />
@@ -56,11 +60,14 @@
         <ImageButton
             android:id="@+id/btnAgregarCarrito"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
+            android:layout_marginStart="8dp"
             android:scaleType="centerInside"
+            android:tint="#FFFFFFFF"
             android:background="@android:color/transparent"
             android:src="@drawable/cart"
-            android:contentDescription="Carrito" />
+            android:contentDescription="Agregar al carrito" />
     </LinearLayout>
+
 </LinearLayout>
