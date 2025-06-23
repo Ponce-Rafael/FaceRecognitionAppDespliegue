@@ -328,7 +328,6 @@ def eliminar_favorito(usuario_id, nombre_producto):
     conn.close()
     return jsonify({"mensaje": "Favorito eliminado"}), 200
 
-
 # --------------------------------------- #
 # Ordenes
 # --------------------------------------- #
@@ -417,8 +416,14 @@ def finalizar_orden():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-    
+
+# Funcion que ejecuta el servidor para que mi PC actue de servidor
+# if __name__ == '__main__':
+#     app.run(debug=True, host='0.0.0.0')
 
 
+# Funcion que ejecuta el servidor en Render desde Internet 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    from os import environ
+    port = int(environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
