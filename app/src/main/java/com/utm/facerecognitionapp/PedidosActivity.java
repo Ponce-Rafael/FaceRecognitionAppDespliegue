@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -33,7 +32,7 @@ public class PedidosActivity extends AppCompatActivity {
         // ✅ Obtener usuario_id de SharedPreferences
         usuarioId = getSharedPreferences("usuario", MODE_PRIVATE).getInt("usuario_id", -1);
         if (usuarioId == -1) {
-            Toast.makeText(this, "❌ Usuario no identificado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "⚠️ Usuario no identificado", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -52,7 +51,7 @@ public class PedidosActivity extends AppCompatActivity {
                         for (int i = 0; i < ordenes.length(); i++) {
                             JSONObject orden = ordenes.getJSONObject(i);
 
-                            int id = orden.getInt("id");
+//                            int id = orden.getInt("id");
                             String fecha = orden.getString("fecha");
                             double total = orden.getDouble("total");
 
@@ -68,7 +67,7 @@ public class PedidosActivity extends AppCompatActivity {
                             pedidoLayout.setBackgroundColor(0x33FFFFFF);
 
                             TextView txtPedido = new TextView(this);
-                            txtPedido.setText("Pedido #" + id + " - " + fecha);
+                            txtPedido.setText("Fecha: " + (fecha));
                             txtPedido.setTextColor(0xFFFFFFFF);
                             txtPedido.setTypeface(null, Typeface.BOLD);
                             txtPedido.setTextSize(16);
@@ -82,7 +81,7 @@ public class PedidosActivity extends AppCompatActivity {
                                 double subtotal = item.getDouble("subtotal");
 
                                 TextView txtItem = new TextView(this);
-                                txtItem.setText("- " + nombre + " x" + cantidad + " - $" + subtotal);
+                                txtItem.setText("- " + nombre + "  x " + cantidad + " - $" + subtotal);
                                 txtItem.setTextColor(0xFFCCCCCC);
                                 txtItem.setTextSize(14);
                                 pedidoLayout.addView(txtItem);
@@ -112,4 +111,5 @@ public class PedidosActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
+
 }

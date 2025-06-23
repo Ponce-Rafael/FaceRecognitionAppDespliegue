@@ -351,18 +351,24 @@ def obtener_ordenes(usuario_id):
         conn.close()
 
         ordenes_dict = {}
-        for orden_id, fecha, total, producto, cantidad, subtotal in resultados:
+        for orden_id, fecha_str, total, producto, cantidad, subtotal in resultados:
+
+            # ✅ Formatear fecha en español
+            fecha_obj = datetime.fromisoformat(fecha_str)
+            fecha_formateada = fecha_obj.strftime("%d de %B de %Y, %I:%M %p")
+
             if orden_id not in ordenes_dict:
                 ordenes_dict[orden_id] = {
                     "id": orden_id,
-                    "fecha": fecha,
-                    "total": total,
+                    "fecha": fecha_formateada,
+                    "total": round(total, 2),
                     "items": []
                 }
+
             ordenes_dict[orden_id]["items"].append({
                 "producto": producto,
                 "cantidad": cantidad,
-                "subtotal": subtotal
+                "subtotal": round(subtotal, 2)
             })
 
         return jsonify({"ordenes": list(ordenes_dict.values())}), 200
@@ -389,7 +395,7 @@ def finalizar_orden():
         if not items:
             return jsonify({"error": "El carrito está vacío"}), 400
 
-        total = sum(sub for _, _, sub in items)
+        total = round(sum(sub for _, _, sub in items), 2)
         fecha = datetime.now().isoformat()
         cursor.execute("""
             INSERT INTO ordenes (usuario_id, total, fecha)
@@ -401,7 +407,7 @@ def finalizar_orden():
             cursor.execute("""
                 INSERT INTO orden_detalle (orden_id, producto_id, cantidad, subtotal)
                 VALUES (?, ?, ?, ?)
-            """, (orden_id, producto_id, cantidad, subtotal))
+            """, (orden_id, producto_id, cantidad, round(subtotal, 2)))
 
         cursor.execute("DELETE FROM carrito WHERE usuario_id = ?", (usuario_id,))
         conn.commit()
@@ -410,6 +416,7 @@ def finalizar_orden():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
     
 
 

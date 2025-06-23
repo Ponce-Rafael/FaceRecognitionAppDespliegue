@@ -2,14 +2,13 @@ import sqlite3
 import os
 from datetime import datetime
 
-# Ruta a la base de datos
 base_dir = os.path.dirname(__file__)
 DB_PATH = os.path.join(base_dir, "database.db")
 
 # def borrar_todos_los_productos():
 #     conn = sqlite3.connect(DB_PATH)
 #     cursor = conn.cursor()
-#     cursor.execute("DELETE FROM productos")
+#     cursor.execute("DELETE FROM orden_detalle")
 #     conn.commit()
 #     conn.close()
 #     print("🗑️ Todos los productos eliminados.")
@@ -48,16 +47,16 @@ if __name__ == "__main__":
     # Insertar solo los nuevos
     
     # insertar_producto(
-    #     "Camisa Azul",
-    #     11.99,
-    #     os.path.join(base_dir, "image", "ropa", "camisaAzul.png"),
+    #     "Camisa Negra",
+    #     5.50,
+    #     os.path.join(base_dir, "image", "ropa", "camisaNegra.png"),
     #     "accesorios"
     # )
 
     insertar_producto(
-        "Creatina RC 300g",
-        25.99,
-        os.path.join(base_dir, "image", "suplementos", "creatine.pngg"),
+        "Proteina Whey 2 kg",
+        82.99,
+        os.path.join(base_dir, "image", "suplementos", "protein.pngggg"),
         "suplementos"
     )
 

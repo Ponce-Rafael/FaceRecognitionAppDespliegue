@@ -123,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tabCategorias"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:scrollbars="none">
 
             <LinearLayout
@@ -137,54 +137,6 @@
         </HorizontalScrollView>
 
         <!-- Menú inferior -->
-        <LinearLayout
-            android:id="@+id/bottomNav"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:background="@drawable/nav_end"
-            android:elevation="6dp"
-            android:gravity="center"
-            android:weightSum="4"
-            android:clipToPadding="false">
-
-            <ImageButton
-                android:id="@+id/btnNavHome"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/home"
-                android:background="@android:color/transparent"
-                android:tint="#FFFFFF" />
-
-            <ImageButton
-                android:id="@+id/btnNavFav"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/heart"
-                android:background="@android:color/transparent"
-                android:tint="#FFFFFF" />
-
-            <ImageButton
-                android:id="@+id/btnNavCart"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/update"
-                android:background="@android:color/transparent"
-                android:tint="#FFFFFF" />
-
-            <ImageButton
-                android:id="@+id/btnNavPerfil"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/user"
-                android:background="@android:color/transparent"
-                android:tint="#FFFFFF" />
-        </LinearLayout>
     </RelativeLayout>
 
     <!-- MENÚ LATERAL -->

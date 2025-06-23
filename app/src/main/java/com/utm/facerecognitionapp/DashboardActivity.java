@@ -34,7 +34,7 @@ import org.json.JSONObject;
 public class DashboardActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
-    ImageButton btnMenu, btnNavCart, btnCarrito, btnNavFav;
+    ImageButton btnMenu, btnCarrito;
     LinearLayout containerProductos;
     TextView tabSupplements, tabAccessories;
     EditText etBuscar;
@@ -52,9 +52,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayout);
         btnMenu = findViewById(R.id.btnMenu);
-        btnNavCart = findViewById(R.id.btnNavCart);
         btnCarrito = findViewById(R.id.btnCarrito);
-        btnNavFav = findViewById(R.id.btnNavFav);
         containerProductos = findViewById(R.id.containerProductos);
         tabSupplements = findViewById(R.id.tabSupplements);
         tabAccessories = findViewById(R.id.tabAccessories);
@@ -90,12 +88,6 @@ public class DashboardActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnNavFav.setOnClickListener(v -> {
-            Intent intent = new Intent(DashboardActivity.this, FavoritosActivity.class);
-            intent.putExtra("usuario_id", usuarioId);
-            startActivity(intent);
-        });
-
         tabSupplements.setOnClickListener(v -> {
             categoriaActual = "suplementos";
             cargarProductosPorCategoria(categoriaActual);
@@ -118,13 +110,6 @@ public class DashboardActivity extends AppCompatActivity {
                 cargarProductosPorCategoria(categoriaActual);
             }
             return true;
-        });
-
-        btnNavCart.setOnClickListener(v -> {
-            cargarProductosPorCategoria("suplementos");
-            tabSupplements.setTextColor(Color.parseColor("#FF4444"));
-            tabAccessories.setTextColor(Color.parseColor("#AAAAAA"));
-            etBuscar.setText("");
         });
 
         cargarProductosPorCategoria(categoriaActual);
