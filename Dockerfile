@@ -19,7 +19,7 @@ COPY . /app
 
 # Actualizar pip e instalar las dependencias
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --use-pep517 -r requirements.txt
 
 # Exponer el puerto usado por Flask
 EXPOSE 5000
