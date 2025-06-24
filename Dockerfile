@@ -1,28 +1,18 @@
-# Imagen base de Python 3.10 (es compatible con dlib)
-FROM python:3.10-slim
-
-# Instalar librerías del sistema necesarias para compilar dlib
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
-    libopenblas-dev \
-    liblapack-dev \
-    libx11-dev \
-    libgtk-3-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Imagen base con dlib preinstalado (Python 3.8 + dlib)
+FROM bamos/dlib:python3
 
 # Crear carpeta de trabajo
 WORKDIR /app
 
-# Copiar el proyecto completo al contenedor
+# Copiar solo los archivos necesarios
 COPY . /app
 
-# Actualizar pip e instalar las dependencias
+# Instalar las demás dependencias del proyecto
 RUN pip install --upgrade pip
-RUN pip install --use-pep517 -r requirements.txt
+RUN pip install flask face_recognition numpy opencv-python pillow Rx
 
-# Exponer el puerto usado por Flask
+# Exponer el puerto de Flask
 EXPOSE 5000
 
-# Comando para ejecutar el servidor Flask
-CMD ["python", "app.py"]
+# Ejecutar tu app Flask
+CMD ["python", "Backend/app.py"]
